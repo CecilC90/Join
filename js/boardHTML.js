@@ -135,9 +135,9 @@ function renderPrioButton(index) {
     `;
 }
 
-function renderAssingnedToDropdownListHTMLEditview(i, firstAndSecondLetter, color) {
+function renderAssingnedToDropdownListHTMLEditview(i, index, firstAndSecondLetter, color) {
   return /*html */ `
-    <div class="dropdownContacts" id="dropdownContactEditview${i}" onclick="setContactSelectedEditview(${i})">
+    <div class="dropdownContacts" id="dropdownContactEditview${i}" onclick="setContactSelectedEditview(${i}, ${index})">
       <div class="dropdownContactNameConatiner">
         <div class="contactsIcon" style="background-color: ${color}">${firstAndSecondLetter}</div>
         <p>${contacts[i]['name']}</p>

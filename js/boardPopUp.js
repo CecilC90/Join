@@ -175,7 +175,7 @@ async function editTask(index) {
     checkDueDateNotInPastEditview();
     renderPrioButton(index);
     changeSelectedContacts(index);
-    renderAssingnedToDropdownListEditview();
+    renderAssingnedToDropdownListEditview(index);
     renderSelectedContactsIconsEditview(index);
     renderSubtasksEditview(index);
     loadPrioButton(index);
@@ -297,12 +297,10 @@ function changeSelectedContacts(index) {
 
     for (let i = 0; i < todos[index].assignedContacts.length; i++) {
         let todosContact = todos[index].assignedContacts[i];
-
         for (let j = 0; j < contacts.length; j++) {
             let contact = contacts[j];
-
             if (todosContact === contact.id) {
-                contact.selected = true;
+                contact.selected = true;  
             }
         }
     }
@@ -328,12 +326,12 @@ function pushSelecetedContactsToTodos(index) {
  * Creates the list of contacts that can be selected.
  * 
  */
-function renderAssingnedToDropdownListEditview() {
+function renderAssingnedToDropdownListEditview(index) {
     let content = document.getElementById("dropdownContentAssignedToEditview");
     content.innerHTML = "";
     for (let i = 0; i < contacts.length; i++) {
       let firstAndSecondLetter = getFirstAndSecondLetter(i);
-      content.innerHTML += renderAssingnedToDropdownListHTMLEditview(i, firstAndSecondLetter, contacts[i]["color"]);
+      content.innerHTML += renderAssingnedToDropdownListHTMLEditview(i, index, firstAndSecondLetter, contacts[i]["color"]);
       showSelectedDropdownContactEditview(i);
     }
   }
@@ -357,7 +355,7 @@ function renderAssingnedToDropdownListEditview() {
       }
     }
     if(contactInput.length == 0){
-      renderAssingnedToDropdownListEditview();
+      renderAssingnedToDropdownListEditview(index);
       dropdownContentAssignedToEditview.style.display = "none";
       toggleDropdownIconEditview("assignedToDropdownIconEditview", "none");
     }
@@ -385,15 +383,15 @@ function renderAssingnedToDropdownListEditview() {
    * 
    * @param {number} i - Number from the array contacts.
    */
-  function setContactSelectedEditview(i) {
-    if (contacts[i]['selected']) {
-      contacts[i]['selected'] = false;
+  function setContactSelectedEditview(i, index) {
+    if (contacts[i].selected) {
+      contacts[i].selected = false;
       showSelectedDropdownContactEditview(i);
     } else {
-      contacts[i]['selected'] = true;
+      contacts[i].selected = true;
       showSelectedDropdownContactEditview(i);
     }
-    renderSelectedContactsIconsEditview(i);
+    renderSelectedContactsIconsEditview(index);
   }
   
   /**
@@ -417,12 +415,14 @@ function renderAssingnedToDropdownListEditview() {
    * Creates the icons below the input field assigned To
    * 
    */
-  function renderSelectedContactsIconsEditview() {
+  function renderSelectedContactsIconsEditview(index) {
     let content = document.getElementById("showSelectedDropdownContactEditview");
     content.innerHTML = "";
-    for (let i = 0; i < contacts.length; i++) {
-      if (contacts[i]["selected"]) {
-        content.innerHTML += renderSelectedContactsIconsHTML(i, contacts[i]["color"]);
+    for (let i = 0; i < todos[index].assignedContacts.length; i++) {
+      let assignedContact = todos[index].assignedContacts[i];
+      const contact = findContactById(assignedContact);
+      if (contact.selected) {
+        content.innerHTML += renderSelectedContactsIconsHTML(i, contact.color);
       }
     }
   }
